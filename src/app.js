@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { application } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
@@ -15,6 +15,11 @@ app.use(express.json({//means we are accepting json in our server
 app.use(express.urlencoded({extended: true, limit: "16kb"})); //to get data from url //'extended' for nested objects in url
 app.use(express.static("public")); //to store files/assets in your server , No need to give name only public
 app.use(cookieParser()); //to allow our server to access user's cookies 
-app.use(cookieParser()); //to allow our server to access user's cookies 
+
+//routes import
+import userRouter from './routes/user.routes.js';
+//routes declaration
+app.use("/api/v1/users",userRouter) // here we are not use simply app.get() or .post() as we don't have every components in one single file.
+
 
 export {app};
