@@ -8,6 +8,6 @@ const storage = multer.diskStorage({ //this code from official github documentat
     filename: function (req, file, cb) {
       cb(null, file.originalname)
     }
-  })
+  })  
   
-  export const upload = multer({ storage: storage })
+  export const upload = multer({ storage: storage }) //will return us the storage path which we have given
