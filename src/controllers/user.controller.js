@@ -18,7 +18,7 @@ const registerUser = asyncHandler(async (req, res) => {
   //  throw new ApiError(400,"full name is required")  }
 
   //Step3. Check if user already exists: throug username & email
-  const existedUser = User.findOne({
+  const existedUser = await User.findOne({
     $or: [{ username }, { email }], //way to check for both fields
   });
   if (existedUser) {
@@ -37,7 +37,7 @@ const registerUser = asyncHandler(async (req, res) => {
   //Step5. Upload them to cloudinary , avatar
   const avatar = await uploadOnCloudinary(avatarLocalPath);
   const coverImage = await uploadOnCloudinary(coverImageLocalPath);
-  if (!avatar) throw new ApiError(400, "Avatar file is required");
+  if (!avatar) throw new ApiError(400, "Avatar file is required2.");
 
   //Step6. Create user object - create entry in DB
   const user = await User.create({
@@ -61,9 +61,9 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   //Step9. Return response
- return  res.status(201).json({
-    new :ApiResponse(200,createdUser,"User registered successfully")
-  });
+ return  res.status(201).json(
+     new ApiResponse(200,createdUser,"User registered successfully")
+  );
 });
 
 export { registerUser };

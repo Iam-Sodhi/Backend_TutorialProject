@@ -3,11 +3,12 @@ import multer from "multer";
 
 const storage = multer.diskStorage({ //this code from official github documentation
     destination: function (req, file, cb) {
-      cb(null, './public/temp')
+      cb(null, "./public/temp")
     },
     filename: function (req, file, cb) {
+      
       cb(null, file.originalname)
     }
-  })  
+  }) 
   
-  export const upload = multer({ storage: storage }) //will return us the storage path which we have given
+  export const upload = multer({ storage }) //will return us the storage path which we have given
