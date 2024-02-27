@@ -52,7 +52,7 @@ const userSchema = new Schema({
 //a middleware of mongoose
 userSchema.pre("save",async function(next){ //do something before saving
    if(this.isModified("password")){ //so that encryption is done only when password is modified. Otherwise, It will encrypt the password everytime we modify any other field and save it.
-       this.password= bcrypt.hash(this.password,10)
+       this.password= await bcrypt.hash(this.password,10) //await as it takes time to encrypt password
     }
     next()
 })
