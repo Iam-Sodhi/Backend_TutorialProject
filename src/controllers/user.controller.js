@@ -27,8 +27,14 @@ const registerUser = asyncHandler(async (req, res) => {
 
   //Step4. Check for images , check for avatar(which is required true)
   //we already have middleware in our user.router which will provide us with the required images/files
-  const avatarLocalPath = req.files?.avatar[0]?.path;
-  const coverImageLocalPath = req.files?.coverImage[0]?.path;
+  const avatarLocalPath = req.files?.avatar[0]?.path; //avatar name from middleware used
+  //const coverImageLocalPath = req.files?.coverImage[0]?.path;
+  let coverImageLocalPath;
+  if(req.files && Array.isArray(req.files.coverImage)&& req.files.coverImage[0].path){ //it would not give error of undefined when we will save in database
+    coverImageLocalPath=req.files.coverImage[0].path;
+  }
+
+
   if (!avatarLocalPath) {
     //as it required true
     throw new ApiError(400, "Avatar file is required");
@@ -50,7 +56,7 @@ const registerUser = asyncHandler(async (req, res) => {
     username: username.toLowerCase(),
   });
 
-  //Step7. Remove password and refresh token fiel from response
+  //Step7. Remove password and refresh token field from response
   const createdUser = await User.findById(user._id).select(
     "-password -refreshToken"
   ); //_id is made by mongoDB itself
