@@ -1,10 +1,11 @@
 import e, {Router} from "express";
-import { registerUser } from "../controllers/user.controller.js";
+import { loginUser, logoutUser, registerUser } from "../controllers/user.controller.js";
 import {upload} from "../middlewares/multer.middleware.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 const router=Router();
 
-router.route("/register").post(
+router.route("/register").post( 
     upload.fields([   //midleware for file handling
         { 
             name: "avatar",
@@ -17,5 +18,8 @@ router.route("/register").post(
     ]),
     registerUser);
 //http://localhost:8000/api/v1/users/register
+
+router.route("/login").post(loginUser)
+router.route("/logout").post(verifyJWT ,logoutUser);
 
 export default router;
